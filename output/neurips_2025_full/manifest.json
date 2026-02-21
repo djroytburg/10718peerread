@@ -1,0 +1,17 @@
+{
+  "scrape_date": "2026-02-12 08:04:40 UTC",
+  "total_papers": 5540,
+  "accepted": 5286,
+  "rejected": 254,
+  "unknown_status": 0,
+  "total_reviews": 22369,
+  "avg_reviews_per_paper": 4.04,
+  "pdfs_downloaded": 5540,
+  "pdfs_failed": 0,
+  "rating_stats": {
+    "count": 22369,
+    "mean": 4.31,
+    "min": 1,
+    "max": 6
+  }
+}
