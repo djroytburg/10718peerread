@@ -1,0 +1,812 @@
+{
+  "model": "us.meta.llama3-3-70b-instruct-v1:0",
+  "seed": 10718,
+  "max_tokens": 128000,
+  "has_reviews": false,
+  "num_pairs": 100,
+  "results": [
+    {
+      "accepted_id": "Xma2G1ak3H",
+      "rejected_id": "0iJskiCgKp",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "ZHoryZEpvl",
+      "rejected_id": "XResNG9opT",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0fZoqVoc0o",
+      "rejected_id": "0wW6Ml0qku",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WJujF9An5L",
+      "rejected_id": "0F924d12FX",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XfHfTqeXfZ",
+      "rejected_id": "VafdgT65jB",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "ZK7dqwWxex",
+      "rejected_id": "XResNG9opT",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VsZzTSyk5p",
+      "rejected_id": "XvHQnCywxN",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VV1HfpDCF1",
+      "rejected_id": "XvHQnCywxN",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XPe55Uffd7",
+      "rejected_id": "VpRZIRjWrS",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VZQSrNfNHd",
+      "rejected_id": "Y58JfHeQhH",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "X0Etmtge6w",
+      "rejected_id": "VafdgT65jB",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0EILv1HcmG",
+      "rejected_id": "XoFJjBH1Oq",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "Wm5cizmdcm",
+      "rejected_id": "04ZLO7bIvu",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XsNi2STaj0",
+      "rejected_id": "YEYOkWtkMm",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "WXo0DLSaIf",
+      "rejected_id": "XResNG9opT",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "0D3ja9s17M",
+      "rejected_id": "ZBlIh88GMA",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VvZBJItmtV",
+      "rejected_id": "WOXyOiVd4B",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0kAfwgpeug",
+      "rejected_id": "XResNG9opT",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XR5y4nvTfz",
+      "rejected_id": "XoFJjBH1Oq",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0wC6h6KGH8",
+      "rejected_id": "XvHQnCywxN",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WYnvP3DePZ",
+      "rejected_id": "WOXyOiVd4B",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WbpzGpVWVx",
+      "rejected_id": "YEYOkWtkMm",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WQb0YrFl3H",
+      "rejected_id": "YqzAsStE6n",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WENq0drMfO",
+      "rejected_id": "XsUnSped3E",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "Ynwl0V1YH0",
+      "rejected_id": "0Yu0eNdHyV",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VeZkY3JjWV",
+      "rejected_id": "VkXyaqhD0P",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VRwcEVRcC9",
+      "rejected_id": "0wW6Ml0qku",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WqZKdj4cnl",
+      "rejected_id": "YqzAsStE6n",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0GDlX9JFf2",
+      "rejected_id": "YtsX7irxbq",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "02qdHz1LU0",
+      "rejected_id": "YtsX7irxbq",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "Wlw8jkGscY",
+      "rejected_id": "YRh4epoqIS",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "XFzDI9CPUm",
+      "rejected_id": "0Y4gjqdvC6",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "Wlpf0Vg4yU",
+      "rejected_id": "ZBlIh88GMA",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YStO2i0oyK",
+      "rejected_id": "VafdgT65jB",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "098tsRhmQ7",
+      "rejected_id": "XResNG9opT",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "YbKdduMtyN",
+      "rejected_id": "XoFJjBH1Oq",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VYLdKb5dzO",
+      "rejected_id": "0F924d12FX",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VS9N6q6b0k",
+      "rejected_id": "XvHQnCywxN",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VYLdKb5dzO",
+      "rejected_id": "XWbIHOW6u1",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "Y1UVWWWGKB",
+      "rejected_id": "XsUnSped3E",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "ZDbhQrgwoT",
+      "rejected_id": "XWbIHOW6u1",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "W6WC6047X2",
+      "rejected_id": "WOXyOiVd4B",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XUKUx7Xu89",
+      "rejected_id": "XResNG9opT",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0XCZWAo7wN",
+      "rejected_id": "XoFJjBH1Oq",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XPe55Uffd7",
+      "rejected_id": "YRh4epoqIS",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WCPAHpVAUp",
+      "rejected_id": "VMcClInij6",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YFQ0Xx5YlW",
+      "rejected_id": "Y58JfHeQhH",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "XF4JM2MTSF",
+      "rejected_id": "Y58JfHeQhH",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YJx8AofTF5",
+      "rejected_id": "VUFQSuU9di",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WjYvHSjXrP",
+      "rejected_id": "0F924d12FX",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "Z2lWGBx2v2",
+      "rejected_id": "YEYOkWtkMm",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YmbQ0qnQ76",
+      "rejected_id": "0iJskiCgKp",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "XwMDUND6iO",
+      "rejected_id": "VpRZIRjWrS",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YeZnsJzjii",
+      "rejected_id": "VkXyaqhD0P",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0IStUxUDGJ",
+      "rejected_id": "YtsX7irxbq",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VZQSrNfNHd",
+      "rejected_id": "VafdgT65jB",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0wC6h6KGH8",
+      "rejected_id": "VpRZIRjWrS",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VPm6afl0Sc",
+      "rejected_id": "XResNG9opT",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "VanvIu0KZU",
+      "rejected_id": "XWbIHOW6u1",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "Wxh5Xz7NpJ",
+      "rejected_id": "0F924d12FX",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YS0a4YpQ1C",
+      "rejected_id": "YRh4epoqIS",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "Y38oEwTLTQ",
+      "rejected_id": "XWbIHOW6u1",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "XNo4yS9n1k",
+      "rejected_id": "Y58JfHeQhH",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WrYWolqKh3",
+      "rejected_id": "VMcClInij6",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WCenI6RU9s",
+      "rejected_id": "0F924d12FX",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "14ZMESMh5V",
+      "rejected_id": "WOXyOiVd4B",
+      "choice_1": 2,
+      "choice_2": 1,
+      "consistent": true,
+      "correct": false
+    },
+    {
+      "accepted_id": "YJ7H3amL0k",
+      "rejected_id": "04ZLO7bIvu",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "YXcYD2nLmc",
+      "rejected_id": "0Y4gjqdvC6",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YvypxK4kut",
+      "rejected_id": "YRh4epoqIS",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "Xll01vw606",
+      "rejected_id": "VUFQSuU9di",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "YJ7H3amL0k",
+      "rejected_id": "YtsX7irxbq",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YOv9CANvDv",
+      "rejected_id": "WOXyOiVd4B",
+      "choice_1": 2,
+      "choice_2": 1,
+      "consistent": true,
+      "correct": false
+    },
+    {
+      "accepted_id": "00oRAPDWsX",
+      "rejected_id": "WOXyOiVd4B",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VNTj7PGlrz",
+      "rejected_id": "XoFJjBH1Oq",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0KnZasL9nA",
+      "rejected_id": "0Yu0eNdHyV",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YyhRJXxbpi",
+      "rejected_id": "0F924d12FX",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WjYvHSjXrP",
+      "rejected_id": "0Yu0eNdHyV",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YES7VDXPV8",
+      "rejected_id": "YEYOkWtkMm",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0IStUxUDGJ",
+      "rejected_id": "0wW6Ml0qku",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VanvIu0KZU",
+      "rejected_id": "VMcClInij6",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "VYY5sG4EMm",
+      "rejected_id": "XWbIHOW6u1",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "YY1MPKBHp7",
+      "rejected_id": "0F924d12FX",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XVm8KOO3Ri",
+      "rejected_id": "XResNG9opT",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WydxWM2xNb",
+      "rejected_id": "0iJskiCgKp",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WkUzrUsqR9",
+      "rejected_id": "YqzAsStE6n",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "0jQUNQsZra",
+      "rejected_id": "VUFQSuU9di",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "X8x70g0SSw",
+      "rejected_id": "VUFQSuU9di",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "Z3lGbdexVY",
+      "rejected_id": "ZBlIh88GMA",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WDAKFpWftI",
+      "rejected_id": "04ZLO7bIvu",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XUks1Y96NR",
+      "rejected_id": "YEYOkWtkMm",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "YXSKYFZweV",
+      "rejected_id": "04ZLO7bIvu",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "WrYWolqKh3",
+      "rejected_id": "VafdgT65jB",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "WdL3O58gde",
+      "rejected_id": "VkXyaqhD0P",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "14irEkV01l",
+      "rejected_id": "Y58JfHeQhH",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "XDTTwmjhAg",
+      "rejected_id": "0F924d12FX",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0vJJdEiXOb",
+      "rejected_id": "0Y4gjqdvC6",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0fZoqVoc0o",
+      "rejected_id": "VafdgT65jB",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "XmV7KRABBl",
+      "rejected_id": "XvHQnCywxN",
+      "choice_1": 1,
+      "choice_2": 2,
+      "consistent": true,
+      "correct": true
+    },
+    {
+      "accepted_id": "Z2lWGBx2v2",
+      "rejected_id": "04ZLO7bIvu",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    },
+    {
+      "accepted_id": "0YUHjKjjUY",
+      "rejected_id": "VMcClInij6",
+      "choice_1": 1,
+      "choice_2": 1,
+      "consistent": false,
+      "correct": false
+    }
+  ],
+  "accuracy": 0.21,
+  "num_consistent": 23,
+  "correct": 21
+}

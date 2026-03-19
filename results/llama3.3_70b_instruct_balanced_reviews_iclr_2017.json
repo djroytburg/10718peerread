@@ -1,0 +1,199 @@
+{
+  "model": "us.meta.llama3-3-70b-instruct-v1:0",
+  "has_reviews": true,
+  "results": [
+    {
+      "paper_id": "400",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "756",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "518",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "471",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "767",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "612",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "670",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "398",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "597",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "678",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "648",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "412",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "611",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "444",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "749",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "358",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "498",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "574",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "438",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "482",
+      "prediction": "REJECT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "363",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "745",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "333",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "719",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "486",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "457",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "566",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "697",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "739",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "460",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "773",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "778",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "556",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "632",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "687",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "554",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    },
+    {
+      "paper_id": "330",
+      "prediction": "ACCEPT",
+      "ground_truth": "ACCEPT"
+    },
+    {
+      "paper_id": "691",
+      "prediction": "REJECT",
+      "ground_truth": "REJECT"
+    }
+  ],
+  "accuracy": 0.9736842105263158,
+  "total_evaluated": 38,
+  "correct": 37
+}
