@@ -31,13 +31,10 @@ import boto3
 from convert_json_to_markdown import json_to_markdown
 
 
-# BASE_DIR = Path(__file__).resolve().parent
-BASE_DIR = Path(__file__).resolve().parent.parent
-# ANON_PDFS_DIR = BASE_DIR / "output" / "neurips_2025_full" / "anonymized_pdfs"
-# REVIEWS_DIR = BASE_DIR / "output" / "neurips_2025_full" / "reviews"
-ANON_PDFS_DIR = BASE_DIR / "PeerRead" / "data" / "iclr_2017" / "test" / "parsed_pdfs"
-REVIEWS_DIR = BASE_DIR / "PeerRead" / "data" / "iclr_2017" / "test" / "reviews"
-RESULTS_JSON = BASE_DIR / "results" / "llama3.3_70b_instruct_balanced_reviews_iclr_2017.json"
+BASE_DIR = Path(__file__).resolve().parent
+ANON_PDFS_DIR = BASE_DIR / "output" / "neurips_2025_full" / "anonymized_pdfs"
+REVIEWS_DIR = BASE_DIR / "output" / "neurips_2025_full" / "reviews"
+RESULTS_JSON = BASE_DIR / "results" / "llama3.3_70b_instruct_balanced_reviews_neurips_2025_full.json"
 
 NUM_SAMPLES = 100
 RANDOM_SEED = 10718
