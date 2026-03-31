@@ -1,4 +1,7 @@
-archive/
-.venv/
-*.pdf
-*__pycache__*
+.venv
+output/neurips_2025_full/dataset
+__pycache__
+nlpeer/
+openreview_scraper/
+output/
+results/

@@ -78,6 +78,11 @@ def should_remove_element(idx, item, abstract_idx, ack_range, nlp, ner_cache):
         # Remove everything else before abstract
         return True
 
+    # Email detection in any early label (footnotes, headers, etc)
+    if abstract_idx is not None and idx < abstract_idx + 30:
+        if re.search(r'\b[\w\.-]+@[\w\.-]+\.\w+\b', text):
+            return True
+
     # Early content check (within 20 elements after abstract)
     if abstract_idx is not None and idx < abstract_idx + 20:
         # Check for author/affiliation patterns
@@ -96,6 +101,13 @@ def should_remove_element(idx, item, abstract_idx, ack_range, nlp, ner_cache):
             if re.search(r'^[0-9∗†‡§¶]+\s*[A-Z]', text):
                 return True
 
+    # Email detection in main text (also catches some missed cases)
+    if label in ['text', 'footnote', 'page_footer']:
+        if re.search(r'\b[\w\.-]+@[\w\.-]+\.\w+\b', text):
+            # Only remove if email is substantial or is the whole element
+            if len(text) < 200 or len(re.findall(r'\b[\w\.-]+@[\w\.-]+\.\w+\b', text)) > 0:
+                return True
+
     # NER-based detection for person names
     if label == 'text':
         entities = get_ner_entities(text, nlp, ner_cache)
@@ -104,6 +116,13 @@ def should_remove_element(idx, item, abstract_idx, ack_range, nlp, ner_cache):
                 # Only remove if it's a substantial part of the text
                 if len(ent_text) / max(len(text), 1) > 0.3:
                     return True
+
+    # Author attribution patterns
+    if abstract_idx is not None and idx < abstract_idx + 30:
+        attr_keywords = ['correspondence', 'corresponding author', 'author contributions',
+                        'author notes', 'author information', 'contact:', 'email:']
+        if any(kw in text.lower() for kw in attr_keywords):
+            return True
 
     # Pattern-based fallback for isolated names (RELATIVE indexing)
     if label == 'text' and abstract_idx is not None and idx < abstract_idx + 20:
