@@ -37,13 +37,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # REVIEWS_DIR = BASE_DIR / "output" / "neurips_2025_full" / "reviews"
 ANON_PDFS_DIR = BASE_DIR / "PeerRead" / "data" / "iclr_2017" / "test" / "parsed_pdfs"
 REVIEWS_DIR = BASE_DIR / "PeerRead" / "data" / "iclr_2017" / "test" / "reviews"
-RESULTS_JSON = BASE_DIR / "results" / "llama3.3_70b_instruct_balanced_reviews_iclr_2017.json"
+# RESULTS_JSON = BASE_DIR / "results" / "llama3.3_70b_instruct_balanced_reviews_iclr_2017.json"
 
 NUM_SAMPLES = 100
 RANDOM_SEED = 10718
+CONTEXT_LEN = 100000
 BALANCED = True
 # When True, append the "reviews" from each paper's review JSON to the model prompt.
-HAS_REVIEWS = True
+HAS_REVIEWS = False
+# Prompt mode options: "neutral", "conservative", "severe_conservative".
+# You can also override via environment variable PROMPT_MODE.
+PROMPT_MODE = "neutral"
+CONFERENCE = "ICLR 2017"
 
 # Use the foundation model ID (no ARN) so Bedrock runs in  YOUR account.
 # Request access to this model in AWS Console > Bedrock > Model access if needed.
@@ -74,23 +79,56 @@ def format_reviews(reviews: List[Any]) -> str:
 def build_prompt(markdown: str, reviews_text: Optional[str] = None) -> str:
     """Build the prompt sent to the model."""
     task = (
-        "You are an expert NeurIPS 2025 area chair.\n\n"
+        f"You are an expert {CONFERENCE} area chair.\n\n"
         "Task:\n"
-        "- Read the following anonymized NeurIPS 2025 paper in Markdown form.\n"
+        f"- Read the following anonymized {CONFERENCE} paper in Markdown form.\n"
     )
     if reviews_text:
         task += (
             "- You are also given the official reviews for this submission.\n"
             "- Based on the paper content and the reviews, PREDICT whether it "
-            "was accepted to NeurIPS 2025.\n"
+            f"was accepted to {CONFERENCE}.\n"
         )
     else:
         task += (
             "- Based ONLY on the content and quality of the paper, PREDICT whether it "
-            "was accepted to NeurIPS 2025.\n"
+            f"was accepted to {CONFERENCE}.\n"
         )
+    policy_mode = PROMPT_MODE if PROMPT_MODE in {
+        "neutral",
+        "conservative",
+        "severe_conservative",
+    } else "neutral"
+
+    if policy_mode == "neutral":
+        policy_text = (
+            "Decision policy (important):\n"
+            "- Make your best single-shot guess from the available evidence.\n"
+            "- If strengths and weaknesses are close, choose the more likely outcome.\n\n"
+        )
+    elif policy_mode == "conservative":
+        policy_text = (
+            "Decision policy (important):\n"
+            "- Be conservative: default to REJECT unless there is clear evidence for ACCEPT.\n"
+            "- Borderline papers should be REJECT.\n"
+            "- If uncertain, output REJECT.\n"
+            "- If major concerns exist (novelty, technical correctness, empirical rigor, clarity, or significance), output REJECT.\n\n"
+        )
+    else:
+        policy_text = (
+            "Decision policy (important):\n"
+            "- Use a strict desk-reject style prior: most submissions are reject unless exceptional evidence is present.\n"
+            "- Default decision is REJECT.\n"
+            "- Any meaningful uncertainty => REJECT.\n"
+            "- Any major weakness in novelty, correctness, empirical rigor, clarity, significance, or reproducibility => REJECT.\n"
+            "- Borderline, mixed, partially convincing, or under-justified papers => REJECT.\n"
+            "- Output ACCEPT only if ALL criteria are clearly strong: novelty, technical soundness, strong empirical evidence, clear writing, and meaningful impact.\n"
+            "- If one criterion is not clearly strong, output REJECT.\n\n"
+        )
+
     task += (
         "- You do not know the true decision; you must guess.\n\n"
+        f"{policy_text}"
         "Output format (important):\n"
         '- Respond with a single JSON object and NOTHING else.\n'
         '- The JSON must be exactly one of:\n'
@@ -118,7 +156,6 @@ def call_bedrock_model(
 ) -> Optional[Literal["ACCEPT", "REJECT"]]:
     """Call Bedrock Converse API and parse a binary ACCEPT/REJECT prediction."""
     prompt = build_prompt(markdown, reviews_text=reviews_text)
-
     kwargs = {
         "modelId": MODEL_ID,
         "messages": [
@@ -143,22 +180,37 @@ def call_bedrock_model(
         if "text" in segment:
             text_parts.append(segment["text"])
     full_text = "".join(text_parts).strip()
+    print(full_text)
+    # Parse as raw JSON first (best case: model obeyed output contract exactly).
+    try:
+        parsed = json.loads(full_text)
+        if isinstance(parsed, dict):
+            pred = parsed.get("prediction")
+            if isinstance(pred, str) and pred.strip().upper() in {"ACCEPT", "REJECT"}:
+                return pred.strip().upper()  # type: ignore[return-value]
+    except json.JSONDecodeError:
+        pass
 
-    # Try to extract {"prediction": "ACCEPT"} or {"prediction": "REJECT"} via regex.
-    match = re.search(
+    # Robust extraction: if the model echoed instructions/examples, there can be
+    # multiple JSON snippets in the output. Use the last prediction mention.
+    matches = re.findall(
         r'\{\s*"prediction"\s*:\s*"(ACCEPT|REJECT)"\s*\}',
         full_text,
         re.IGNORECASE,
     )
-    if match:
-        return match.group(1).upper()  # type: ignore[return-value]
+    if matches:
+        return matches[-1].upper()  # type: ignore[return-value]
 
-    # Fallback: look for the words ACCEPT / REJECT if the JSON contract was not obeyed.
+    # Last-resort fallback: choose whichever label appears last in the text.
     upper = full_text.upper()
-    if "ACCEPT" in upper and "REJECT" not in upper:
+    accept_idx = upper.rfind("ACCEPT")
+    reject_idx = upper.rfind("REJECT")
+    if accept_idx != -1 and reject_idx == -1:
         return "ACCEPT"
-    if "REJECT" in upper and "ACCEPT" not in upper:
+    if reject_idx != -1 and accept_idx == -1:
         return "REJECT"
+    if accept_idx != -1 and reject_idx != -1:
+        return "ACCEPT" if accept_idx > reject_idx else "REJECT"
 
     return None
 
@@ -231,6 +283,7 @@ def main():
 
     accepted = [s for s in labeled if s["label"] == "ACCEPT"]
     rejected = [s for s in labeled if s["label"] == "REJECT"]
+    sampled = []
 
     if balanced:
         if not accepted or not rejected:
@@ -285,6 +338,11 @@ def main():
 
     results = []
     correct = 0
+    tp = 0
+    fp = 0
+    tn = 0
+    fn = 0
+    unparsed_predictions = 0
 
     for sample in sampled:
         paper_id = sample["paper_id"]
@@ -303,6 +361,19 @@ def main():
         prediction = call_bedrock_model(
             bedrock_client, markdown, reviews_text=reviews_text
         )
+
+        if prediction is None:
+            unparsed_predictions += 1
+        elif ground_truth == "ACCEPT":
+            if prediction == "ACCEPT":
+                tp += 1
+            else:
+                fn += 1
+        else:
+            if prediction == "ACCEPT":
+                fp += 1
+            else:
+                tn += 1
 
         is_correct = prediction == ground_truth
         if is_correct:
@@ -328,10 +399,17 @@ def main():
         return
 
     accuracy = correct / total_evaluated
+    tpr = tp / (tp + fn) if (tp + fn) > 0 else None
+    fpr = fp / (fp + tn) if (fp + tn) > 0 else None
+
     print("\n=== Summary ===")
     print(f"Evaluated samples: {total_evaluated}")
     print(f"Correct predictions: {correct}")
     print(f"Accuracy: {accuracy:.2%}")
+    print(f"Unparsed predictions: {unparsed_predictions}")
+    print(f"Confusion matrix (positive=ACCEPT): TP={tp}, FP={fp}, TN={tn}, FN={fn}")
+    print(f"TPR (Recall for ACCEPT): {tpr:.2%}" if tpr is not None else "TPR (Recall for ACCEPT): N/A")
+    print(f"FPR (REJECT->ACCEPT rate): {fpr:.2%}" if fpr is not None else "FPR (REJECT->ACCEPT rate): N/A")
 
     output_data = {
         "model": MODEL_ID,
@@ -345,13 +423,24 @@ def main():
             for r in results
         ],
         "accuracy": accuracy,
+        "tpr": tpr,
+        "fpr": fpr,
+        "confusion_matrix": {
+            "tp": tp,
+            "fp": fp,
+            "tn": tn,
+            "fn": fn,
+            "positive_class": "ACCEPT",
+        },
+        "unparsed_predictions": unparsed_predictions,
         "total_evaluated": total_evaluated,
         "correct": correct,
     }
-    RESULTS_JSON.parent.mkdir(parents=True, exist_ok=True)
-    with open(RESULTS_JSON, "w", encoding="utf-8") as f:
-        json.dump(output_data, f, indent=2)
-    print(f"\nResults saved to: {RESULTS_JSON}")
+    print(output_data)
+    # RESULTS_JSON.parent.mkdir(parents=True, exist_ok=True)
+    # with open(RESULTS_JSON, "w", encoding="utf-8") as f:
+    #     json.dump(output_data, f, indent=2)
+    # print(f"\nResults saved to: {RESULTS_JSON}")
 
 
 if __name__ == "__main__":
