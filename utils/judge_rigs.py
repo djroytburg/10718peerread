@@ -16,6 +16,8 @@ When cache_config={"dataset": str, "paper_id": str} is provided, results are
 looked up from and saved to results/cache/ automatically.
 """
 
+from __future__ import annotations
+
 import dataclasses
 import itertools
 import json
@@ -68,11 +70,29 @@ def _dry_run_usage(prompt: str) -> Usage:
     return Usage(input_tokens=estimate_tokens(prompt), output_tokens=0, latency_ms=0, calls=0)
 
 
+def _truncate_paper_md(paper_md: str, max_paragraphs: int, rng: random.Random) -> str:
+    """
+    Randomly sample up to max_paragraphs paragraphs from paper_md.
+    Always keeps the first two paragraphs (title + abstract), then randomly
+    samples from the remainder, preserving original order.
+    """
+    paras = [p for p in paper_md.split("\n\n") if p.strip()]
+    if len(paras) <= max_paragraphs:
+        return paper_md
+    head = paras[:2]  # title + abstract
+    body = paras[2:]
+    n_sample = max(0, max_paragraphs - len(head))
+    indices = sorted(rng.sample(range(len(body)), min(n_sample, len(body))))
+    sampled_body = [body[i] for i in indices]
+    return "\n\n".join(head + sampled_body)
+
+
 def make_few_shot_examples(
     dataset_dir: str | Path,
     n: int = 4,
     balanced: bool = True,
     seed: int = 42,
+    max_paragraphs: Optional[int] = None,
 ) -> list[dict]:
     """
     Load up to n labeled examples from dataset_dir for use as few-shot demonstrations.
@@ -86,6 +106,9 @@ def make_few_shot_examples(
 
     If balanced=True, samples n//2 from each class; remainder filled from
     the larger class. Pass balanced=False to sample randomly regardless of label.
+
+    max_paragraphs: if set, each example paper is truncated to this many paragraphs
+      (title + abstract always kept; remainder randomly sampled).
     """
     try:
         from convert_json_to_markdown import json_to_markdown
@@ -136,6 +159,8 @@ def make_few_shot_examples(
     for entry in sampled:
         doc = json.loads(entry["pdf_path"].read_text(encoding="utf-8"))
         paper_md = json_to_markdown(doc)
+        if max_paragraphs is not None:
+            paper_md = _truncate_paper_md(paper_md, max_paragraphs, rng)
         reviews = entry["review_json"].get("reviews", [])
         reviews_text = format_reviews(reviews) if reviews else None
         examples.append({
@@ -173,20 +198,29 @@ class AcceptanceRig:
         conference: str = "NeurIPS 2025",
         max_output_tokens: int = 64,
         few_shot_examples: Optional[list[dict]] = None,
+        few_shot_max_paragraphs: Optional[int] = None,
+        few_shot_label: Optional[str] = None,
     ):
         self.with_reviews = with_reviews
         self.conference = conference
         self.max_output_tokens = max_output_tokens
         self.few_shot_examples = few_shot_examples or []
+        self.few_shot_max_paragraphs = few_shot_max_paragraphs
+        self.few_shot_label = few_shot_label  # included in hash to distinguish compositions
 
     def to_config_dict(self) -> dict:
-        return {
+        cfg = {
             "rig_type": "AcceptanceRig",
             "with_reviews": self.with_reviews,
             "conference": self.conference,
             "max_output_tokens": self.max_output_tokens,
             "n_few_shot": len(self.few_shot_examples),
         }
+        if self.few_shot_max_paragraphs is not None:
+            cfg["few_shot_max_paragraphs"] = self.few_shot_max_paragraphs
+        if self.few_shot_label is not None:
+            cfg["few_shot_label"] = self.few_shot_label
+        return cfg
 
     def _paper_block(self, paper_md: str, reviews_text: Optional[str] = None) -> str:
         block = (

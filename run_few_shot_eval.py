@@ -1,15 +1,19 @@
 """
-Few-shot AcceptanceRig eval on 10 accept + 10 reject from the canonical test set.
+Few-shot AcceptanceRig eval on the canonical test set.
 
-Two variants:
-  --mode balanced   : 5 accept + 5 reject examples from neurips_2023
-  --mode reject-heavy: 8 reject + 2 accept examples from neurips_2023
+Variants:
+  --mode balanced     : 5 accept + 5 reject examples from neurips_2023
+  --mode reject-heavy : 8 reject + 2 accept examples from neurips_2023
+  --mode all-rejects  : 10 reject + 0 accept examples from neurips_2023
+
+  --full              : run on all 46 canonical papers (default: 10A+10R=20)
 
 Model: deepseek.v3.2 (matches the baseline we're comparing against)
 
 Usage:
   python run_few_shot_eval.py --mode balanced
   python run_few_shot_eval.py --mode reject-heavy
+  python run_few_shot_eval.py --mode all-rejects --full
 """
 
 import argparse
@@ -35,15 +39,17 @@ FEW_SHOT_SRC = BASE_DIR / "output" / "neurips_2023"  # different dataset for exa
 
 DEEPSEEK_V3 = "deepseek.v3.2"
 TEST_SEED   = 10718
-N_TEST      = 10  # per class
+N_TEST      = 10  # per class when not --full
 
 
-def get_test_papers() -> list[dict]:
-    """10 accept + 10 reject from the canonical test set."""
+def get_test_papers(full: bool = False) -> list[dict]:
+    """Return test papers. full=True → all 46 canonical papers; else 10A+10R."""
     ref = json.loads(REFERENCE.read_text())
-    rng = random.Random(TEST_SEED)
-    accepts = [r for r in ref["results"] if r["ground_truth"] == "ACCEPT"]
+    accepts = [r for r in ref["results"] if r["ground_truth"] == "ACCEPT"][:23]
     rejects = [r for r in ref["results"] if r["ground_truth"] == "REJECT"]
+    if full:
+        return accepts + rejects
+    rng = random.Random(TEST_SEED)
     return rng.sample(accepts, N_TEST) + rng.sample(rejects, min(N_TEST, len(rejects)))
 
 
@@ -70,22 +76,32 @@ def print_metrics(results: list[dict]) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", choices=["balanced", "reject-heavy"], required=True)
+    parser.add_argument("--mode", choices=["balanced", "reject-heavy", "all-rejects", "all-rejects-5"], required=True)
+    parser.add_argument("--full", action="store_true", help="Run on all 46 canonical papers")
     args = parser.parse_args()
 
     if args.mode == "balanced":
         n_examples, n_reject_ex, n_accept_ex = 10, 5, 5
-    else:
+        max_paragraphs = None
+    elif args.mode == "reject-heavy":
         n_examples, n_reject_ex, n_accept_ex = 10, 8, 2
+        max_paragraphs = None
+    elif args.mode == "all-rejects":  # truncated to stay within context limit
+        n_examples, n_reject_ex, n_accept_ex = 10, 10, 0
+        max_paragraphs = 15
+    else:  # all-rejects-5: 5 full reject papers, no truncation
+        n_examples, n_reject_ex, n_accept_ex = 5, 5, 0
+        max_paragraphs = None
 
-    out_file = RESULTS_DIR / f"few_shot_{args.mode}_dsv3_neurips_2025_full.json"
+    suffix = "_full46" if args.full else ""
+    out_file = RESULTS_DIR / f"few_shot_{args.mode}_dsv3_neurips_2025_full{suffix}.json"
 
     print(f"Loading {n_examples} few-shot examples from neurips_2023 "
           f"({n_reject_ex} reject, {n_accept_ex} accept)...")
 
     # Build custom balanced/reject-heavy example set from neurips_2023
     all_examples_balanced = make_few_shot_examples(
-        FEW_SHOT_SRC, n=20, balanced=True, seed=42
+        FEW_SHOT_SRC, n=20, balanced=True, seed=42, max_paragraphs=max_paragraphs
     )
     rejects_ex = [e for e in all_examples_balanced if e["label"] == "REJECT"]
     accepts_ex = [e for e in all_examples_balanced if e["label"] == "ACCEPT"]
@@ -98,9 +114,10 @@ def main() -> None:
           f"{sum(1 for e in few_shot if e['label']=='ACCEPT')} accept examples")
 
     rig = AcceptanceRig(with_reviews=False, conference="NeurIPS 2025",
-                        max_output_tokens=64, few_shot_examples=few_shot)
+                        max_output_tokens=64, few_shot_examples=few_shot,
+                        few_shot_max_paragraphs=max_paragraphs)
 
-    test_papers = get_test_papers()
+    test_papers = get_test_papers(full=args.full)
     print(f"Test papers: {len(test_papers)} "
           f"({sum(1 for r in test_papers if r['ground_truth']=='ACCEPT')} accept, "
           f"{sum(1 for r in test_papers if r['ground_truth']=='REJECT')} reject)")
@@ -148,6 +165,7 @@ def main() -> None:
         out_file.parent.mkdir(parents=True, exist_ok=True)
         out_file.write_text(json.dumps({
             "mode": args.mode,
+            "full": args.full,
             "model": DEEPSEEK_V3,
             "n_few_shot": len(few_shot),
             "few_shot_source": "neurips_2023",

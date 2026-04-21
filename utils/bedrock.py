@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from typing import Any, Optional
 
 import boto3
+from botocore.config import Config
 from botocore.exceptions import ClientError
 
 
@@ -114,7 +115,8 @@ class Usage:
 # ---------------------------------------------------------------------------
 
 def get_bedrock_client():
-    return boto3.client("bedrock-runtime", region_name=AWS_REGION)
+    cfg = Config(read_timeout=300, connect_timeout=10)
+    return boto3.client("bedrock-runtime", region_name=AWS_REGION, config=cfg)
 
 
 # ---------------------------------------------------------------------------
@@ -192,6 +194,11 @@ def converse(
             print(f"Bedrock ClientError: {e}")
             return None, Usage()
         except Exception as e:
+            if attempt < max_retries - 1:
+                print(f"Bedrock error: {e}  — retrying in {retry_wait:.0f}s "
+                      f"(attempt {attempt + 1}/{max_retries})...")
+                time.sleep(retry_wait)
+                continue
             print(f"Bedrock error: {e}")
             return None, Usage()
 
