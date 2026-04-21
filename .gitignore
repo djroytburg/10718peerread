@@ -1,8 +1,7 @@
-# Ignore all pdfs
-/output/
-
-# Ignore all markdown files
-*.md
-
-# Ignore nips scraped
-/nips_scraped_old/
+.venv
+output/neurips_2025_full/dataset
+__pycache__
+nlpeer/
+openreview_scraper/
+output/
+results/
