@@ -1,0 +1,8 @@
+# Ignore all pdfs
+/output/
+
+# Ignore all markdown files
+*.md
+
+# Ignore nips scraped
+/nips_scraped_old/
