@@ -1,58 +1,43 @@
 #!/usr/bin/env python3
-"""
-Run a small Amazon Bedrock experiment:
+"""Evaluate Bedrock acceptance prediction on scraped ICLR markdown papers.
 
-- Sample 100 anonymized NeurIPS 2025 papers from
-  `output/neurips_2025_full/anonymized_pdfs`.
-- Convert each JSON to markdown using `json_to_markdown`.
-- Ask a Bedrock model (default: Llama 3.3 70B Instruct) to predict whether the paper was accepted.
-- Look up the ground-truth `accepted` label from the corresponding file in
-  `output/neurips_2025_full/reviews`.
-- Report per-sample predictions and overall accuracy.
+Expected input layout (from scrape_iclr_hf.py):
+- output/iclr_2025_hf/papers/<paper_id>.json   with key: markdown
+- output/iclr_2025_hf/reviews/<paper_id>.json  with key: accepted (+ optional reviews)
 
-Authentication:
-- This script uses the standard AWS Bedrock Runtime client via `boto3`.
-- Configure your AWS credentials and region in the usual AWS ways
-  (environment variables, shared config/credentials files, or IAM role).
-- Optionally override the model ID and region via environment variables:
-    BEDROCK_MODEL_ID
-    AWS_REGION
+Example:
+    python iclr_acceptance_eval.py
 """
+
+from __future__ import annotations
 
 import json
 import os
 import random
 import re
 from pathlib import Path
-from typing import Any, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 import boto3
 
-from convert_json_to_markdown import json_to_markdown
-
 
 BASE_DIR = Path(__file__).resolve().parent
-ANON_PDFS_DIR = BASE_DIR / "output" / "neurips_2025_full" / "anonymized_pdfs"
-REVIEWS_DIR = BASE_DIR / "output" / "neurips_2025_full" / "reviews"
-RESULTS_JSON = BASE_DIR / "results" / "llama3.3_70b_instruct_balanced_reviews_neurips_2025_full.json"
+DATASET_DIR = BASE_DIR / "output" / "iclr_2018_hf"
+PAPERS_DIR = DATASET_DIR / "papers"
+REVIEWS_DIR = DATASET_DIR / "reviews"
 
 NUM_SAMPLES = 100
 RANDOM_SEED = 10718
-CONTEXT_LEN = 100000
 BALANCED = True
-# When True, append the "reviews" from each paper's review JSON to the model prompt.
 HAS_REVIEWS = False
+CONTEXT_LEN = 100000
+
 # Prompt mode options: "neutral", "conservative", "severe_conservative".
-# You can also override via environment variable PROMPT_MODE.
-PROMPT_MODE = "neutral"
-CONFERENCE = "ICLR 2017"
+PROMPT_MODE = "conservative"
+CONFERENCE = "ICLR 2018"
 
-# Use the foundation model ID (no ARN) so Bedrock runs in  YOUR account.
-# Request access to this model in AWS Console > Bedrock > Model access if needed.
-# Override with BEDROCK_MODEL_ID in your environment if desired.
-DEFAULT_MODEL_ID = "us.meta.llama3-3-70b-instruct-v1:0"  # Llama 3.3 70B Instruct
+DEFAULT_MODEL_ID = "us.meta.llama3-3-70b-instruct-v1:0"
 MODEL_ID = os.environ.get("BEDROCK_MODEL_ID", DEFAULT_MODEL_ID)
-
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 
 
@@ -61,20 +46,25 @@ def get_bedrock_client():
 
 
 def format_reviews(reviews: List[Any]) -> str:
-    """Format the 'reviews' array from a review JSON into a single string."""
-    parts = []
+    parts: List[str] = []
     for i, r in enumerate(reviews, 1):
-        title = r.get("TITLE", "Review")
-        comments = r.get("comments", "")
-        meta = "(meta-review)" if r.get("IS_META_REVIEW") else ""
-        parts.append(f"--- Review {i}: {title} {meta} ---")
-        parts.append(comments)
-        parts.append("")
+        if isinstance(r, dict):
+            title = str(r.get("TITLE") or r.get("title") or f"Review {i}")
+            comments = str(r.get("comments") or r.get("text") or "")
+            meta = "(meta-review)" if r.get("IS_META_REVIEW") else ""
+            parts.append(f"--- Review {i}: {title} {meta} ---")
+            parts.append(comments)
+            parts.append("")
+        else:
+            text = str(r)
+            if text.strip():
+                parts.append(f"--- Review {i} ---")
+                parts.append(text)
+                parts.append("")
     return "\n".join(parts).strip()
 
 
 def build_prompt(markdown: str, reviews_text: Optional[str] = None) -> str:
-    """Build the prompt sent to the model."""
     task = (
         f"You are an expert {CONFERENCE} area chair.\n\n"
         "Task:\n"
@@ -91,19 +81,20 @@ def build_prompt(markdown: str, reviews_text: Optional[str] = None) -> str:
             "- Based ONLY on the content and quality of the paper, PREDICT whether it "
             f"was accepted to {CONFERENCE}.\n"
         )
-    policy_mode = PROMPT_MODE if PROMPT_MODE in {
+
+    mode = PROMPT_MODE if PROMPT_MODE in {
         "neutral",
         "conservative",
         "severe_conservative",
-    } else "neutral"
+    } else "severe_conservative"
 
-    if policy_mode == "neutral":
+    if mode == "neutral":
         policy_text = (
             "Decision policy (important):\n"
             "- Make your best single-shot guess from the available evidence.\n"
             "- If strengths and weaknesses are close, choose the more likely outcome.\n\n"
         )
-    elif policy_mode == "conservative":
+    elif mode == "conservative":
         policy_text = (
             "Decision policy (important):\n"
             "- Be conservative: default to REJECT unless there is clear evidence for ACCEPT.\n"
@@ -123,62 +114,30 @@ def build_prompt(markdown: str, reviews_text: Optional[str] = None) -> str:
             "- If one criterion is not clearly strong, output REJECT.\n\n"
         )
 
-    task += (
+    prompt = (
         "- You do not know the true decision; you must guess.\n\n"
         f"{policy_text}"
         "Output format (important):\n"
-        '- Respond with a single JSON object and NOTHING else.\n'
-        '- The JSON must be exactly one of:\n'
-        '  {\"prediction\": \"ACCEPT\"}\n'
-        '  {\"prediction\": \"REJECT\"}\n\n'
+        "- Respond with a single JSON object and NOTHING else.\n"
+        "- The JSON must be exactly one of:\n"
+        '  {"prediction": "ACCEPT"}\n'
+        '  {"prediction": "REJECT"}\n\n'
         "Paper Markdown:\n"
         "---------------- BEGIN PAPER ----------------\n"
-        f"{markdown}\n"
+        f"{markdown[:CONTEXT_LEN]}\n"
         "----------------- END PAPER -----------------\n"
     )
     if reviews_text:
-        task += (
+        prompt += (
             "\n\nOfficial Reviews:\n"
             "---------------- BEGIN REVIEWS ----------------\n"
             f"{reviews_text}\n"
             "----------------- END REVIEWS -----------------\n"
         )
-    return task
+    return task + prompt
 
 
-def call_bedrock_model(
-    client,
-    markdown: str,
-    reviews_text: Optional[str] = None,
-) -> Optional[Literal["ACCEPT", "REJECT"]]:
-    """Call Bedrock Converse API and parse a binary ACCEPT/REJECT prediction."""
-    prompt = build_prompt(markdown, reviews_text=reviews_text)
-    kwargs = {
-        "modelId": MODEL_ID,
-        "messages": [
-            {
-                "role": "user",
-                "content": [{"text": prompt}],
-            }
-        ],
-        "inferenceConfig": {
-            "maxTokens": 4096,
-            "temperature": 0,
-            "stopSequences": [],
-        },
-    }
-    response = client.converse(**kwargs)
-
-    # Converse API returns the output message content here.
-    response_content = response.get("output", {}).get("message", {}).get("content", [])
-
-    text_parts = []
-    for segment in response_content:
-        if "text" in segment:
-            text_parts.append(segment["text"])
-    full_text = "".join(text_parts).strip()
-    print(full_text)
-    # Parse as raw JSON first (best case: model obeyed output contract exactly).
+def parse_prediction(full_text: str) -> Optional[Literal["ACCEPT", "REJECT"]]:
     try:
         parsed = json.loads(full_text)
         if isinstance(parsed, dict):
@@ -188,8 +147,6 @@ def call_bedrock_model(
     except json.JSONDecodeError:
         pass
 
-    # Robust extraction: if the model echoed instructions/examples, there can be
-    # multiple JSON snippets in the output. Use the last prediction mention.
     matches = re.findall(
         r'\{\s*"prediction"\s*:\s*"(ACCEPT|REJECT)"\s*\}',
         full_text,
@@ -198,7 +155,6 @@ def call_bedrock_model(
     if matches:
         return matches[-1].upper()  # type: ignore[return-value]
 
-    # Last-resort fallback: choose whichever label appears last in the text.
     upper = full_text.upper()
     accept_idx = upper.rfind("ACCEPT")
     reject_idx = upper.rfind("REJECT")
@@ -212,152 +168,135 @@ def call_bedrock_model(
     return None
 
 
-def get_ground_truth_label(review_json: dict) -> Optional[Literal["ACCEPT", "REJECT"]]:
-    """
-    Map the `accepted` attribute in a review JSON to ACCEPT / REJECT.
+def call_bedrock_model(
+    client,
+    markdown: str,
+    reviews_text: Optional[str] = None,
+) -> Optional[Literal["ACCEPT", "REJECT"]]:
+    prompt = build_prompt(markdown, reviews_text=reviews_text)
+    response = client.converse(
+        modelId=MODEL_ID,
+        messages=[{"role": "user", "content": [{"text": prompt}]}],
+        inferenceConfig={
+            "maxTokens": 4096,
+            "temperature": 0,
+            "stopSequences": [],
+        },
+    )
 
-    The file at `output/neurips_2025_full/reviews/<id>.json` includes
-    an `accepted` attribute.
-    """
-    accepted_value = review_json.get("accepted", None)
+    response_content = response.get("output", {}).get("message", {}).get("content", [])
+    text_parts = [seg["text"] for seg in response_content if "text" in seg]
+    full_text = "".join(text_parts).strip()
+    return parse_prediction(full_text)
+
+
+def get_ground_truth_label(review_json: Dict[str, Any]) -> Optional[Literal["ACCEPT", "REJECT"]]:
+    accepted_value = review_json.get("accepted")
 
     if isinstance(accepted_value, bool):
         return "ACCEPT" if accepted_value else "REJECT"
-
     if isinstance(accepted_value, (int, float)):
         return "ACCEPT" if bool(accepted_value) else "REJECT"
-
     if isinstance(accepted_value, str):
         val = accepted_value.strip().lower()
-        if val in {"true", "yes", "y", "accept", "accepted"}:
+        if val in {"true", "yes", "y", "accept", "accepted", "1"}:
             return "ACCEPT"
-        if val in {"false", "no", "n", "reject", "rejected"}:
+        if val in {"false", "no", "n", "reject", "rejected", "0"}:
             return "REJECT"
-
     return None
 
 
-def main():
-    if not ANON_PDFS_DIR.is_dir():
-        raise SystemExit(f"Anonymized PDFs dir not found: {ANON_PDFS_DIR}")
+def main() -> None:
+    if not PAPERS_DIR.is_dir():
+        raise SystemExit(f"Papers dir not found: {PAPERS_DIR}")
     if not REVIEWS_DIR.is_dir():
         raise SystemExit(f"Reviews dir not found: {REVIEWS_DIR}")
 
-    num_samples = NUM_SAMPLES
-    balanced = BALANCED
-
     random.seed(RANDOM_SEED)
 
-    json_files = sorted(ANON_PDFS_DIR.glob("*.pdf.json"))
-    if len(json_files) == 0:
-        raise SystemExit(f"No .pdf.json files found in {ANON_PDFS_DIR}")
+    paper_files = sorted(PAPERS_DIR.glob("*.json"))
+    if not paper_files:
+        raise SystemExit(f"No paper .json files found in {PAPERS_DIR}")
 
-    # Build a labeled pool of papers with valid reviews.
     labeled = []
-    for path in json_files:
-        paper_id = path.name.replace(".pdf.json", "")
+    for paper_path in paper_files:
+        paper_id = paper_path.stem
         review_path = REVIEWS_DIR / f"{paper_id}.json"
         if not review_path.is_file():
             continue
 
+        with paper_path.open("r", encoding="utf-8") as f:
+            paper_json = json.load(f)
         with review_path.open("r", encoding="utf-8") as f:
             review_json = json.load(f)
+
+        markdown = str(paper_json.get("markdown") or "").strip()
+        if not markdown:
+            continue
 
         label = get_ground_truth_label(review_json)
         if label is None:
             continue
 
-        labeled.append({
-            "paper_id": paper_id,
-            "path": path,
-            "label": label,
-            "review_json": review_json,
-        })
+        labeled.append(
+            {
+                "paper_id": paper_id,
+                "paper_json": paper_json,
+                "review_json": review_json,
+                "label": label,
+            }
+        )
 
     if not labeled:
-        print("No labeled papers with valid reviews were found.")
+        print("No labeled markdown papers found.")
         return
 
     accepted = [s for s in labeled if s["label"] == "ACCEPT"]
     rejected = [s for s in labeled if s["label"] == "REJECT"]
-    sampled = []
+    sampled: List[Dict[str, Any]] = []
 
+    balanced = BALANCED
     if balanced:
         if not accepted or not rejected:
-            print(
-                "Cannot perform balanced sampling (need both accepted and rejected papers). "
-                "Falling back to unbalanced random sampling."
-            )
+            print("Cannot perform balanced sampling; falling back to random sampling.")
             balanced = False
         else:
-            per_class = num_samples // 2
+            per_class = NUM_SAMPLES // 2
             n_accept = min(per_class, len(accepted))
             n_reject = min(per_class, len(rejected))
+            sampled = random.sample(accepted, n_accept) + random.sample(rejected, n_reject)
 
-            if n_accept == 0 or n_reject == 0:
-                print(
-                    "Cannot perform balanced sampling with requested num-samples; "
-                    "falling back to unbalanced random sampling."
-                )
-                balanced = False
-            else:
-                sampled = random.sample(accepted, n_accept) + random.sample(
-                    rejected, n_reject
-                )
-
-                # If num_samples is odd or we had to clip one side, optionally top up
-                # with remaining papers (still deterministic given the seed).
-                remaining = num_samples - len(sampled)
-                if remaining > 0:
-                    leftover_pool = [s for s in labeled if s not in sampled]
-                    if leftover_pool:
-                        sampled.extend(
-                            random.sample(
-                                leftover_pool, min(remaining, len(leftover_pool))
-                            )
-                        )
-
-                random.shuffle(sampled)
+            remaining = NUM_SAMPLES - len(sampled)
+            if remaining > 0:
+                leftovers = [s for s in labeled if s not in sampled]
+                if leftovers:
+                    sampled.extend(random.sample(leftovers, min(remaining, len(leftovers))))
+            random.shuffle(sampled)
 
     if not balanced:
-        pool = labeled
-        if len(pool) <= num_samples:
-            if len(pool) < num_samples:
-                print(
-                    f"Warning: only found {len(pool)} labeled papers, "
-                    f"but requested num_samples={num_samples}. Using all available."
-                )
-            sampled = pool
+        if len(labeled) <= NUM_SAMPLES:
+            sampled = labeled
         else:
-            sampled = random.sample(pool, num_samples)
+            sampled = random.sample(labeled, NUM_SAMPLES)
 
-    bedrock_client = get_bedrock_client()
+    client = get_bedrock_client()
 
     results = []
     correct = 0
-    tp = 0
-    fp = 0
-    tn = 0
-    fn = 0
+    tp = fp = tn = fn = 0
     unparsed_predictions = 0
 
     for sample in sampled:
         paper_id = sample["paper_id"]
-        path = sample["path"]
         ground_truth = sample["label"]
-
-        with path.open("r", encoding="utf-8") as f:
-            doc = json.load(f)
-
-        markdown = json_to_markdown(doc)
+        markdown = str(sample["paper_json"].get("markdown") or "")
 
         reviews_text = None
-        if HAS_REVIEWS and sample.get("review_json") and sample["review_json"].get("reviews"):
-            reviews_text = format_reviews(sample["review_json"]["reviews"])
+        reviews = sample["review_json"].get("reviews")
+        if HAS_REVIEWS and isinstance(reviews, list) and reviews:
+            reviews_text = format_reviews(reviews)
 
-        prediction = call_bedrock_model(
-            bedrock_client, markdown, reviews_text=reviews_text
-        )
+        prediction = call_bedrock_model(client, markdown, reviews_text=reviews_text)
 
         if prediction is None:
             unparsed_predictions += 1
@@ -384,7 +323,6 @@ def main():
                 "correct": is_correct,
             }
         )
-
         print(
             f"Paper {paper_id}: prediction={prediction}, "
             f"ground_truth={ground_truth}, correct={is_correct}"
@@ -392,7 +330,7 @@ def main():
 
     total_evaluated = len(results)
     if total_evaluated == 0:
-        print("No samples were evaluated (all were skipped).")
+        print("No samples were evaluated.")
         return
 
     accuracy = correct / total_evaluated
@@ -405,12 +343,23 @@ def main():
     print(f"Accuracy: {accuracy:.2%}")
     print(f"Unparsed predictions: {unparsed_predictions}")
     print(f"Confusion matrix (positive=ACCEPT): TP={tp}, FP={fp}, TN={tn}, FN={fn}")
-    print(f"TPR (Recall for ACCEPT): {tpr:.2%}" if tpr is not None else "TPR (Recall for ACCEPT): N/A")
-    print(f"FPR (REJECT->ACCEPT rate): {fpr:.2%}" if fpr is not None else "FPR (REJECT->ACCEPT rate): N/A")
+    print(
+        f"TPR (Recall for ACCEPT): {tpr:.2%}"
+        if tpr is not None
+        else "TPR (Recall for ACCEPT): N/A"
+    )
+    print(
+        f"FPR (REJECT->ACCEPT rate): {fpr:.2%}"
+        if fpr is not None
+        else "FPR (REJECT->ACCEPT rate): N/A"
+    )
 
     output_data = {
         "model": MODEL_ID,
+        "conference": CONFERENCE,
+        "dataset_dir": str(DATASET_DIR),
         "has_reviews": HAS_REVIEWS,
+        "prompt_mode": PROMPT_MODE,
         "results": [
             {
                 "paper_id": r["paper_id"],
@@ -434,12 +383,7 @@ def main():
         "correct": correct,
     }
     print(output_data)
-    # RESULTS_JSON.parent.mkdir(parents=True, exist_ok=True)
-    # with open(RESULTS_JSON, "w", encoding="utf-8") as f:
-    #     json.dump(output_data, f, indent=2)
-    # print(f"\nResults saved to: {RESULTS_JSON}")
 
 
 if __name__ == "__main__":
     main()
-
