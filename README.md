@@ -1,11 +1,3 @@
-# Reducing False Positives in Automated Peer Review
-
-Code for the paper *Reducing False Positives in Automated Peer Review* (10-718, CMU, 2026).
-
-Dataset: [djroytburg/NeurIPS-2023-2025](https://huggingface.co/datasets/djroytburg/NeurIPS-2023-2025)
-
----
-
 ## Setup
 
 ```bash
@@ -202,15 +194,3 @@ python run_zero_shot_eval_iclr.py --model llama
 └── requirements.txt
 ```
 
----
-
-## Citation
-
-```bibtex
-@misc{roytburg2026falsepositives,
-  title  = {Reducing False Positives in Automated Peer Review},
-  author = {Roytburg, Dani and Doshi, Prina and Jain, Aditya},
-  year   = {2026},
-  url    = {https://github.com/djroytburg/10718peerread}
-}
-```
