@@ -1,9 +1,37 @@
+# environments
 .venv
-output/neurips_2025_full/dataset
-__pycache__
+*.egg-info
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+
+# data (large — available on HuggingFace: djroytburg/NeurIPS-2023-2025)
+output/
 nlpeer/
 openreview_scraper/
-output/
-results/
-output/iclr_2018_hf
-output/iclr_2025_hf
+
+# PeerRead submodule / data
+PeerRead/
+
+# archive of deprecated scripts
+archive/
+
+# HuggingFace upload staging
+hf_data/
+hf_README.md
+
+# model checkpoints
+models/
+
+# logs and scratch
+logs/
+*.log
+
+# editor / OS
+.DS_Store
+*.swp
+results/cache/
+results/figures/
+results/tables/

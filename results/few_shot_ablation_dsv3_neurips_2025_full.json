@@ -1,0 +1,746 @@
+{
+  "model": "deepseek.v3.2",
+  "pool_size": 5,
+  "few_shot_source": "neurips_2023",
+  "test_n": 20,
+  "usage": {
+    "input_tokens": 10754444,
+    "output_tokens": 1190,
+    "latency_ms": 11847747,
+    "calls": 120
+  },
+  "compositions": {
+    "5R0A": [
+      {
+        "paper_id": "X5B2yTT97A",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0jQUNQsZra",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0vJJdEiXOb",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "VRwcEVRcC9",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "WYnvP3DePZ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XOw7Yf8qN3",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "ZHoryZEpvl",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XIeE8jbM4K",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YtmfBtIOPQ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XBD4OjCcIA",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YEYOkWtkMm",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "YRh4epoqIS",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "04ZLO7bIvu",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "Y58JfHeQhH",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "0Y4gjqdvC6",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XWbIHOW6u1",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VafdgT65jB",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XvHQnCywxN",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "VpRZIRjWrS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XResNG9opT",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      }
+    ],
+    "4R1A": [
+      {
+        "paper_id": "X5B2yTT97A",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0jQUNQsZra",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0vJJdEiXOb",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "VRwcEVRcC9",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "WYnvP3DePZ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XOw7Yf8qN3",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "ZHoryZEpvl",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XIeE8jbM4K",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YtmfBtIOPQ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XBD4OjCcIA",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YEYOkWtkMm",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "YRh4epoqIS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "04ZLO7bIvu",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "Y58JfHeQhH",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "0Y4gjqdvC6",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XWbIHOW6u1",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VafdgT65jB",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XvHQnCywxN",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VpRZIRjWrS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XResNG9opT",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      }
+    ],
+    "3R2A": [
+      {
+        "paper_id": "X5B2yTT97A",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0jQUNQsZra",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0vJJdEiXOb",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "VRwcEVRcC9",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "WYnvP3DePZ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XOw7Yf8qN3",
+        "prediction": null,
+        "ground_truth": "ACCEPT",
+        "correct": null
+      },
+      {
+        "paper_id": "ZHoryZEpvl",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XIeE8jbM4K",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YtmfBtIOPQ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XBD4OjCcIA",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YEYOkWtkMm",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "YRh4epoqIS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "04ZLO7bIvu",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "Y58JfHeQhH",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "0Y4gjqdvC6",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XWbIHOW6u1",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VafdgT65jB",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XvHQnCywxN",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VpRZIRjWrS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XResNG9opT",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      }
+    ],
+    "2R3A": [
+      {
+        "paper_id": "X5B2yTT97A",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0jQUNQsZra",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0vJJdEiXOb",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "VRwcEVRcC9",
+        "prediction": null,
+        "ground_truth": "ACCEPT",
+        "correct": null
+      },
+      {
+        "paper_id": "WYnvP3DePZ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XOw7Yf8qN3",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "ZHoryZEpvl",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XIeE8jbM4K",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YtmfBtIOPQ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XBD4OjCcIA",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YEYOkWtkMm",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "YRh4epoqIS",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "04ZLO7bIvu",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "Y58JfHeQhH",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "0Y4gjqdvC6",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "XWbIHOW6u1",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VafdgT65jB",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XvHQnCywxN",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "VpRZIRjWrS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XResNG9opT",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      }
+    ],
+    "1R4A": [
+      {
+        "paper_id": "X5B2yTT97A",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0jQUNQsZra",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0vJJdEiXOb",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "VRwcEVRcC9",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "WYnvP3DePZ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XOw7Yf8qN3",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "ZHoryZEpvl",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XIeE8jbM4K",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YtmfBtIOPQ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XBD4OjCcIA",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YEYOkWtkMm",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "YRh4epoqIS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "04ZLO7bIvu",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "Y58JfHeQhH",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "0Y4gjqdvC6",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XWbIHOW6u1",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VafdgT65jB",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XvHQnCywxN",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "VpRZIRjWrS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XResNG9opT",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      }
+    ],
+    "0R5A": [
+      {
+        "paper_id": "X5B2yTT97A",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0jQUNQsZra",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "0vJJdEiXOb",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "VRwcEVRcC9",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "WYnvP3DePZ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XOw7Yf8qN3",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "ZHoryZEpvl",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XIeE8jbM4K",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YtmfBtIOPQ",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "XBD4OjCcIA",
+        "prediction": "ACCEPT",
+        "ground_truth": "ACCEPT",
+        "correct": true
+      },
+      {
+        "paper_id": "YEYOkWtkMm",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "YRh4epoqIS",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "04ZLO7bIvu",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "Y58JfHeQhH",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      },
+      {
+        "paper_id": "0Y4gjqdvC6",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XWbIHOW6u1",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VafdgT65jB",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XvHQnCywxN",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "VpRZIRjWrS",
+        "prediction": "ACCEPT",
+        "ground_truth": "REJECT",
+        "correct": false
+      },
+      {
+        "paper_id": "XResNG9opT",
+        "prediction": "REJECT",
+        "ground_truth": "REJECT",
+        "correct": true
+      }
+    ]
+  }
+}

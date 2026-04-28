@@ -1,0 +1,106 @@
+{
+  "rig": "DebateRig+reviews",
+  "config": {
+    "reviewers": [
+      "mistral.magistral-small-2509",
+      "google.gemma-3-12b-it",
+      "us.meta.llama3-3-70b-instruct-v1:0"
+    ],
+    "ac_model": "deepseek.v3.2",
+    "n_rounds": 2,
+    "with_reviews": true,
+    "review_seed": 10718
+  },
+  "usage": {
+    "input_tokens": 1940929,
+    "output_tokens": 30776,
+    "latency_ms": 798738,
+    "calls": 84
+  },
+  "results": [
+    {
+      "paper_id": "Wk65okms3T",
+      "prediction": "ACCEPT",
+      "confidence": 0.8,
+      "ground_truth": "ACCEPT",
+      "correct": true
+    },
+    {
+      "paper_id": "YIGUv0BZCy",
+      "prediction": "ACCEPT",
+      "confidence": 0.8,
+      "ground_truth": "ACCEPT",
+      "correct": true
+    },
+    {
+      "paper_id": "VZQ04Ojhu5",
+      "prediction": "ACCEPT",
+      "confidence": 0.78,
+      "ground_truth": "ACCEPT",
+      "correct": true
+    },
+    {
+      "paper_id": "XfHfTqeXfZ",
+      "prediction": "ACCEPT",
+      "confidence": 0.85,
+      "ground_truth": "ACCEPT",
+      "correct": true
+    },
+    {
+      "paper_id": "0jQUNQsZra",
+      "prediction": "ACCEPT",
+      "confidence": 0.78,
+      "ground_truth": "ACCEPT",
+      "correct": true
+    },
+    {
+      "paper_id": "WabVVQKTUF",
+      "prediction": "ACCEPT",
+      "confidence": 0.78,
+      "ground_truth": "ACCEPT",
+      "correct": true
+    },
+    {
+      "paper_id": "0F924d12FX",
+      "prediction": "REJECT",
+      "confidence": 0.75,
+      "ground_truth": "REJECT",
+      "correct": true
+    },
+    {
+      "paper_id": "04ZLO7bIvu",
+      "prediction": "REJECT",
+      "confidence": 0.7,
+      "ground_truth": "REJECT",
+      "correct": true
+    },
+    {
+      "paper_id": "XsUnSped3E",
+      "prediction": "REJECT",
+      "confidence": 0.75,
+      "ground_truth": "REJECT",
+      "correct": true
+    },
+    {
+      "paper_id": "VUFQSuU9di",
+      "prediction": "REJECT",
+      "confidence": 0.72,
+      "ground_truth": "REJECT",
+      "correct": true
+    },
+    {
+      "paper_id": "XvHQnCywxN",
+      "prediction": "REJECT",
+      "confidence": 0.75,
+      "ground_truth": "REJECT",
+      "correct": true
+    },
+    {
+      "paper_id": "Y58JfHeQhH",
+      "prediction": "REJECT",
+      "confidence": 0.78,
+      "ground_truth": "REJECT",
+      "correct": true
+    }
+  ]
+}

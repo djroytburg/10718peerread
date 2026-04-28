@@ -1,0 +1,49 @@
+Bootstrap: docker
+From: python:3.12-slim
+
+%post
+    apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        libglib2.0-0 \
+        libgl1 \
+        libgomp1 \
+        poppler-utils \
+        tesseract-ocr \
+        tesseract-ocr-eng \
+        libsm6 \
+        libxext6 \
+        libxrender1 \
+        curl \
+        git \
+    && rm -rf /var/lib/apt/lists/*
+
+    pip install --no-cache-dir --upgrade pip
+    pip install --no-cache-dir -r /workspace/requirements.docker.txt
+    python -m spacy download en_core_web_sm
+
+%files
+    requirements.docker.txt       /workspace/requirements.docker.txt
+    parse_pdfs_docling.py         /workspace/parse_pdfs_docling.py
+    parse_pdfs_parallel.py        /workspace/parse_pdfs_parallel.py
+    anonymize_pdfs.py             /workspace/anonymize_pdfs.py
+    anonymize_batch.py            /workspace/anonymize_batch.py
+    convert_to_peerread_format.py /workspace/convert_to_peerread_format.py
+    convert_json_to_markdown.py   /workspace/convert_json_to_markdown.py
+    create_balanced_split.py      /workspace/create_balanced_split.py
+    diagnostics.py                /workspace/diagnostics.py
+    validate_anonymization.py     /workspace/validate_anonymization.py
+    scrape_neurips.py             /workspace/scrape_neurips.py
+    PeerRead/                     /workspace/PeerRead/
+
+%environment
+    export PYTHONUNBUFFERED=1
+    export PYTHONPATH=/workspace
+
+%runscript
+    cd /workspace
+    exec python parse_pdfs_docling.py "$@"
+
+%labels
+    Author droytburg
+    Description PeerRead PDF parsing and anonymization pipeline
+    Version 1.0

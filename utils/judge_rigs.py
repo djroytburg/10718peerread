@@ -49,6 +49,37 @@ PairwiseChoice = Literal[1, 2]
 
 
 # ---------------------------------------------------------------------------
+# Decision-policy text blocks (injected by AcceptanceRig and the zero-shot
+# eval harness; the verbatim strings are reproduced in the paper appendix).
+# ---------------------------------------------------------------------------
+
+STRATEGIES: dict[str, str] = {
+    "neutral": "",
+    "conservative": (
+        "Decision policy (important):\n"
+        "- Be conservative: default to REJECT unless there is clear evidence for ACCEPT.\n"
+        "- Borderline papers should be REJECT.\n"
+        "- If uncertain, output REJECT.\n"
+        "- If major concerns exist (novelty, technical correctness, empirical rigor, "
+        "clarity, or significance), output REJECT.\n\n"
+    ),
+    "severe_conservative": (
+        "Decision policy (important):\n"
+        "- Use a strict desk-reject style prior: most submissions are rejected unless "
+        "exceptional evidence is present.\n"
+        "- Default decision is REJECT.\n"
+        "- Any meaningful uncertainty => REJECT.\n"
+        "- Any major weakness in novelty, correctness, empirical rigor, clarity, "
+        "significance, or reproducibility => REJECT.\n"
+        "- Borderline, mixed, partially convincing, or under-justified papers => REJECT.\n"
+        "- Output ACCEPT only if ALL criteria are clearly strong: novelty, technical "
+        "soundness, strong empirical evidence, clear writing, and meaningful impact.\n"
+        "- If one criterion is not clearly strong, output REJECT.\n\n"
+    ),
+}
+
+
+# ---------------------------------------------------------------------------
 # Shared helpers
 # ---------------------------------------------------------------------------
 
